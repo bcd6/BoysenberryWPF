@@ -4,6 +4,13 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Assets\Logo.ico</ApplicationIcon>
+    <Win32Resource />
+    <PackageId>Boysenberry</PackageId>
+    <Authors>Youqing</Authors>
+    <Company />
+    <AssemblyName>Boysenberry</AssemblyName>
+    <RootNamespace>Boysenberry</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
