@@ -90,6 +90,10 @@
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="Margin" Value="15,5,15,0" />
         <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="RowHeight" Value="24" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="GridLinesVisibility" Value="None" />
     </Style>
 
 </ResourceDictionary>

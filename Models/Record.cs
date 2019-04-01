@@ -1,22 +1,23 @@
 ﻿using Prism.Mvvm;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
+using System.Windows;
 
 namespace Boysenberry.Models
 {
-    class Record: BindableBase
+    class Record : BindableBase
     {
         private string _userId;
         private string _nickname;
         private int _count;
         private DateTime _updateTime;
 
-        private bool _isFuncEnable = false;
+        private bool _isFuncEnable = true;
+        private bool _isOpenEnable = true;
+        private Visibility _isProgressVisiable = Visibility.Hidden;
         private CancellationTokenSource _cancellationTokenSource;
 
-        
+
 
         public string UserId
         {
@@ -43,6 +44,17 @@ namespace Boysenberry.Models
         {
             get { return _isFuncEnable; }
             set { SetProperty(ref _isFuncEnable, value); }
+        }
+       public bool IsOpenEnable
+        {
+            get { return _isOpenEnable; }
+            set { SetProperty(ref _isOpenEnable, value); }
+        }
+       
+         public Visibility IsProgressVisiable
+        {
+            get { return _isProgressVisiable; }
+            set { SetProperty(ref _isProgressVisiable, value); }
         }
 
         public CancellationTokenSource CancellationTokenSource

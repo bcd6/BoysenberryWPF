@@ -6,7 +6,6 @@
     xmlns:fa="http://schemas.fontawesome.io/icons/"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
-    xmlns:system="clr-namespace:System;assembly=System.Runtime"
     prism:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
 
@@ -28,21 +27,29 @@
                 </StackPanel>
             </Button>
             <Label Style="{StaticResource ToolbarSeperate}">|</Label>
-            <!--  IsEnabled="{Binding Converter={StaticResource EnableButton}, ConverterParameter='Analyse  -->
-            <Button Click="Analyse" Style="{StaticResource ToolbarButton}">
+            <Button
+                Click="Analyse"
+                IsEnabled="{Binding Selected.IsFuncEnable}"
+                Style="{StaticResource ToolbarButton}">
                 <StackPanel Style="{StaticResource ToolbarButtonStackPanel}">
                     <fa:ImageAwesome Icon="Spinner" Style="{StaticResource ToolbarButtonIcon}" />
                     <TextBlock Style="{StaticResource ToolbarButtonText}">Analyse</TextBlock>
                 </StackPanel>
             </Button>
-            <Button Click="Start" Style="{StaticResource ToolbarButton}">
+            <Button
+                Click="Start"
+                IsEnabled="{Binding Selected.IsFuncEnable}"
+                Style="{StaticResource ToolbarButton}">
                 <StackPanel Style="{StaticResource ToolbarButtonStackPanel}">
                     <fa:ImageAwesome Icon="HourglassStart" Style="{StaticResource ToolbarButtonIcon}" />
                     <TextBlock Style="{StaticResource ToolbarButtonText}">Start</TextBlock>
                 </StackPanel>
             </Button>
 
-            <Button Click="Stop" Style="{StaticResource ToolbarButton}">
+            <Button
+                Click="Stop"
+                IsEnabled="{Binding Selected.IsFuncEnable}"
+                Style="{StaticResource ToolbarButton}">
                 <StackPanel Style="{StaticResource ToolbarButtonStackPanel}">
                     <fa:ImageAwesome Icon="Stop" Style="{StaticResource ToolbarButtonIcon}" />
                     <TextBlock Style="{StaticResource ToolbarButtonText}">Stop</TextBlock>
@@ -50,14 +57,20 @@
             </Button>
 
 
-            <Button Click="Open" Style="{StaticResource ToolbarButton}">
+            <Button
+                Click="Open"
+                IsEnabled="{Binding Selected.IsOpenEnable}"
+                Style="{StaticResource ToolbarButton}">
                 <StackPanel Style="{StaticResource ToolbarButtonStackPanel}">
                     <fa:ImageAwesome Icon="FolderOpen" Style="{StaticResource ToolbarButtonIcon}" />
                     <TextBlock Style="{StaticResource ToolbarButtonText}">Open</TextBlock>
                 </StackPanel>
             </Button>
 
-            <Button Click="Delete" Style="{StaticResource ToolbarButton}">
+            <Button
+                Click="Delete"
+                IsEnabled="{Binding Selected.IsFuncEnable}"
+                Style="{StaticResource ToolbarButton}">
                 <StackPanel Style="{StaticResource ToolbarButtonStackPanel}">
                     <fa:ImageAwesome Icon="Close" Style="{StaticResource ToolbarButtonIcon}" />
                     <TextBlock Style="{StaticResource ToolbarButtonText}">Delete</TextBlock>
@@ -96,9 +109,12 @@
                 <DataGridTemplateColumn Header="Progress">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <!--<ProgressRing
-                                    IsActive="True"
-                                    Visibility="{Binding IsFuncEnable}" />-->
+                            <fa:ImageAwesome
+                                Icon="CircleOutlineNotch"
+                                Spin="True"
+                                SpinDuration="2"
+                                Style="{StaticResource ToolbarButtonIcon}"
+                                Visibility="{Binding IsProgressVisiable}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

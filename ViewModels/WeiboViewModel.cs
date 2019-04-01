@@ -1,19 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Boysenberry.Models;
+using Boysenberry.Utils;
 using Boysenberry.Repos;
 using Boysenberry.Services;
 using System.Collections.ObjectModel;
 using Prism.Mvvm;
 using System.Configuration;
-using System.Data.SQLite;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Threading;
 using System.IO;
-using ToastNotifications;
-using ToastNotifications.Position;
 using System.Windows;
 
 namespace Boysenberry.ViewModels
@@ -51,8 +48,12 @@ namespace Boysenberry.ViewModels
         }
 
 
+
         public WeiboViewModel(WeiboService service)
         {
+            _selected = new Record();
+            _selected.IsFuncEnable = false;
+            _selected.IsOpenEnable = false;
             _service = service;
             _dataAccess = new DataAccess(SettingViewModel.WeiboDB);
 
@@ -73,6 +74,7 @@ namespace Boysenberry.ViewModels
         {
             RaisePropertyChanged(string.Empty);
         }
+
         public bool EnableButton(string mode)
         {
             try
@@ -105,6 +107,7 @@ namespace Boysenberry.ViewModels
 
 
         }
+
         public void Add()
         {
 
@@ -139,7 +142,8 @@ namespace Boysenberry.ViewModels
             try
             {
                 var record = Selected;
-                record.IsFuncEnable = true;
+                record.IsFuncEnable = false;
+                record.IsProgressVisiable = Visibility.Visible;
                 RaisePropertyChanged(string.Empty);
                 var imgUrls = new List<string>();
                 await Task.Run(() =>
@@ -149,7 +153,8 @@ namespace Boysenberry.ViewModels
                 record.Count = imgUrls.Count;
                 record.UpdateTime = DateTime.Now;
                 _dataAccess.Update(record);
-                record.IsFuncEnable = false;
+                record.IsFuncEnable = true;
+                record.IsProgressVisiable = Visibility.Hidden;
                 RaisePropertyChanged(string.Empty);
                 ToastNotificationUtil.Show("Analyse complete: " + record.Nickname);
             }
@@ -167,7 +172,8 @@ namespace Boysenberry.ViewModels
                 Selected.CancellationTokenSource = new CancellationTokenSource();
                 var record = Selected;
                 var path = $"{Base}\\{record.UserId}";
-                record.IsFuncEnable = true;
+                record.IsFuncEnable = false;
+                record.IsProgressVisiable = Visibility.Visible;
                 RaisePropertyChanged(string.Empty);
                 var imgUrls = new List<string>();
                 await Task.Run(async () =>
@@ -186,7 +192,8 @@ namespace Boysenberry.ViewModels
                 record.Count = imgUrls.Count;
                 record.UpdateTime = DateTime.Now;
                 _dataAccess.Update(record);
-                record.IsFuncEnable = false;
+                record.IsFuncEnable = true;
+                record.IsProgressVisiable = Visibility.Hidden;
                 RaisePropertyChanged(string.Empty);
                 ToastNotificationUtil.Show("Downlaod complete: " + record.Nickname);
 
@@ -202,28 +209,30 @@ namespace Boysenberry.ViewModels
             try
             {
                 var record = Selected;
-                if (record.IsFuncEnable == true)
+                if (record.IsFuncEnable == false)
                 {
                     record.CancellationTokenSource.Cancel();
                     record.CancellationTokenSource = null;
-                    record.IsFuncEnable = false;
+                    record.IsFuncEnable = true;
                     RaisePropertyChanged(string.Empty);
                     ToastNotificationUtil.Show("Task cancellation");
                 }
             }
             catch (Exception)
             {
+                ToastNotificationUtil.Show("Task cancellation failed");
             }
 
         }
-        public async void Open()
+
+        public void Open()
         {
             var record = Selected;
             var path = $"{Base}\\{record.UserId}";
             Process.Start(Environment.GetEnvironmentVariable("WINDIR") + @"\explorer.exe", path);
         }
 
-        public async void Delete()
+        public void Delete()
         {
             try
             {
