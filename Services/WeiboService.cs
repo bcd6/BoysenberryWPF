@@ -77,32 +77,41 @@ namespace Boysenberry.Services
 
         private int ParseImgURL(string response, List<string> urls)
         {
-            JObject root = JObject.Parse(response);
-            IList<JToken> cardsList = root["data"]["cards"].Children().ToList();
-            for (int i = 0; i < cardsList.Count; i++)
+            try
             {
-                JToken mblog = cardsList[i]["mblog"];
-                if (mblog != null)
+                JObject root = JObject.Parse(response);
+                IList<JToken> cardsList = root["data"]["cards"].Children().ToList();
+                for (int i = 0; i < cardsList.Count; i++)
                 {
-                    JToken pics = mblog["pics"];
-                    if (pics != null)
+                    JToken mblog = cardsList[i]["mblog"];
+                    if (mblog != null)
                     {
-                        IList<JToken> picsList = pics.Children().ToList();
-                        for (int j = 0; j < picsList.Count; j++)
+                        JToken pics = mblog["pics"];
+                        if (pics != null)
                         {
-                            JToken large = pics[j]["large"];
-                            if (large != null)
+                            IList<JToken> picsList = pics.Children().ToList();
+                            for (int j = 0; j < picsList.Count; j++)
                             {
-                                urls.Add(large["url"].ToString());
-                                Debug.WriteLine("urls: " + urls.Count);
+                                JToken large = pics[j]["large"];
+                                if (large != null)
+                                {
+                                    urls.Add(large["url"].ToString());
+                                    Debug.WriteLine("urls: " + urls.Count);
+                                }
+
                             }
-
                         }
-                    }
 
+                    }
                 }
+                return cardsList.Count;
             }
-            return cardsList.Count;
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                return 0;
+            }
+            
         }
 
         public async Task DownlaodImg(string imgUrl, string dstFolder)
