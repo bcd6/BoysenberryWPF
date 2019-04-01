@@ -280,7 +280,7 @@ namespace Boysenberry.ViewModels
                 _dataAccess.Delete(record);
                 var path = $"{Base}\\{record.UserId}";
                 DirectoryInfo dstFolder = Directory.CreateDirectory(path);
-                dstFolder.Delete();
+                dstFolder.Delete(true);
                 List.Remove(record);
                 ToastNotificationUtil.Show("Delete complete: " + record.Nickname);
             }
