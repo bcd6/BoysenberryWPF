@@ -12,17 +12,22 @@ using System.Diagnostics;
 using System.Threading;
 using System.IO;
 using System.Windows;
+using System.Runtime.Caching;
 
 namespace Boysenberry.ViewModels
 {
     class WeiboViewModel : BindableBase
     {
+        private Style _enableStyle = Application.Current.FindResource("ToolbarButtonIcon") as Style;
+        private Style _disableStyle = Application.Current.FindResource("ToolbarButtonIconDisable") as Style;
         private string _base;
         private string _input;
         private ObservableCollection<Record> _list;
         private Record _selected;
         private DataAccess _dataAccess;
+        private ObjectCache _cache;
         private WeiboService _service;
+
 
 
         public string Base
@@ -47,27 +52,45 @@ namespace Boysenberry.ViewModels
             set { SetProperty(ref _selected, value); }
         }
 
-
-
         public WeiboViewModel(WeiboService service)
         {
+            _cache = MemoryCache.Default;
             _selected = new Record();
             _selected.IsFuncEnable = false;
             _selected.IsOpenEnable = false;
+            _selected.FuncIconStyle = _disableStyle;
+            _selected.OpenIconStyle = _disableStyle;
+            _selected.StopIconStyle = _disableStyle;
             _service = service;
-            _dataAccess = new DataAccess(SettingViewModel.WeiboDB);
+            _dataAccess = new DataAccess(_service.DB);
 
-            if (!ConfigurationManager.AppSettings["WeiboBase"].Equals(SettingViewModel.SELECT_BASE_HINT) &&
-                !ConfigurationManager.AppSettings["WeiboBase"].Equals(""))
+            if (!ConfigurationManager.AppSettings[_service.BASE].Equals(SettingViewModel.SELECT_BASE_HINT) &&
+                !ConfigurationManager.AppSettings[_service.BASE].Equals(""))
             {
-                _base = ConfigurationManager.AppSettings["WeiboBase"];
-                _list = _dataAccess.QueryAll();
+                _base = ConfigurationManager.AppSettings[_service.BASE];
+                ObservableCollection<Record> listCache = _cache[_service.TAG] as ObservableCollection<Record>;
+                if (_cache[_service.TAG] != null)
+                {
+                    _list = listCache;
+                }
+                else
+                {
+                    _list = _dataAccess.QueryAll();
+                }
             }
             else
             {
                 _base = SettingViewModel.SELECT_BASE_HINT;
                 _list = new ObservableCollection<Record>();
             }
+        }
+
+        public void UnloadedHandler()
+        {
+            CacheItemPolicy policy = new CacheItemPolicy();
+            policy.AbsoluteExpiration = DateTimeOffset.Now.AddYears(999);
+            _cache.Set(_service.TAG, List, policy);
+            Debug.WriteLine("page unloaded");
         }
 
         public void SelectionChanged()
@@ -143,6 +166,9 @@ namespace Boysenberry.ViewModels
             {
                 var record = Selected;
                 record.IsFuncEnable = false;
+                record.IsStopEnable = true;
+                record.FuncIconStyle = _disableStyle;
+                record.StopIconStyle = _enableStyle;
                 record.IsProgressVisiable = Visibility.Visible;
                 RaisePropertyChanged(string.Empty);
                 var imgUrls = new List<string>();
@@ -154,6 +180,9 @@ namespace Boysenberry.ViewModels
                 record.UpdateTime = DateTime.Now;
                 _dataAccess.Update(record);
                 record.IsFuncEnable = true;
+                record.IsStopEnable = false;
+                record.FuncIconStyle = _enableStyle;
+                record.StopIconStyle = _disableStyle;
                 record.IsProgressVisiable = Visibility.Hidden;
                 RaisePropertyChanged(string.Empty);
                 ToastNotificationUtil.Show("Analyse complete: " + record.Nickname);
@@ -173,6 +202,9 @@ namespace Boysenberry.ViewModels
                 var record = Selected;
                 var path = $"{Base}\\{record.UserId}";
                 record.IsFuncEnable = false;
+                record.IsStopEnable = true;
+                record.FuncIconStyle = _disableStyle;
+                record.StopIconStyle = _enableStyle;
                 record.IsProgressVisiable = Visibility.Visible;
                 RaisePropertyChanged(string.Empty);
                 var imgUrls = new List<string>();
@@ -193,6 +225,9 @@ namespace Boysenberry.ViewModels
                 record.UpdateTime = DateTime.Now;
                 _dataAccess.Update(record);
                 record.IsFuncEnable = true;
+                record.IsStopEnable = false;
+                record.FuncIconStyle = _enableStyle;
+                record.StopIconStyle = _disableStyle;
                 record.IsProgressVisiable = Visibility.Hidden;
                 RaisePropertyChanged(string.Empty);
                 ToastNotificationUtil.Show("Downlaod complete: " + record.Nickname);
@@ -214,6 +249,10 @@ namespace Boysenberry.ViewModels
                     record.CancellationTokenSource.Cancel();
                     record.CancellationTokenSource = null;
                     record.IsFuncEnable = true;
+                    record.IsStopEnable = false;
+                    record.FuncIconStyle = _enableStyle;
+                    record.StopIconStyle = _disableStyle;
+                    record.IsProgressVisiable = Visibility.Hidden;
                     RaisePropertyChanged(string.Empty);
                     ToastNotificationUtil.Show("Task cancellation");
                 }
@@ -229,6 +268,7 @@ namespace Boysenberry.ViewModels
         {
             var record = Selected;
             var path = $"{Base}\\{record.UserId}";
+            Directory.CreateDirectory(path);
             Process.Start(Environment.GetEnvironmentVariable("WINDIR") + @"\explorer.exe", path);
         }
 

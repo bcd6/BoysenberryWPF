@@ -1,8 +1,6 @@
 ﻿using Boysenberry.Models;
-using System;
 using System.Collections.ObjectModel;
 using System.Data.SQLite;
-using System.Diagnostics;
 
 namespace Boysenberry.Repos
 {

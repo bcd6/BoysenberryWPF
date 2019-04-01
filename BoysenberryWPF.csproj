@@ -30,6 +30,7 @@
     <PackageReference Include="Prism.Wpf" Version="7.2.0.1038-pre" />
     <PackageReference Include="RestSharp" Version="106.6.9" />
     <PackageReference Include="System.Data.SQLite" Version="1.0.110" />
+    <PackageReference Include="System.Runtime.Caching" Version="4.6.0-preview3.19128.7" />
     <PackageReference Include="ToastNotifications" Version="2.5.1" />
     <PackageReference Include="ToastNotifications.Messages" Version="2.5.1" />
   </ItemGroup>

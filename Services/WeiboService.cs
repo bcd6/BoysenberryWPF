@@ -6,7 +6,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,6 +15,9 @@ namespace Boysenberry.Services
     {
 
         private static string USER_AGENT = @"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36";
+        public string TAG = @"weibo";
+        public string BASE = @"WeiboBase";
+        public string DB = @"Data Source=weibo.db;";
 
         /// <summary>
         /// NicknameToContainerId
@@ -105,7 +107,7 @@ namespace Boysenberry.Services
 
         public async Task DownlaodImg(string imgUrl, string dstFolder)
         {
-            
+
             Uri source = new Uri(imgUrl);
             string fileName = source.LocalPath.Split("/").Last();
             string filePath = $"{dstFolder}\\{fileName}";

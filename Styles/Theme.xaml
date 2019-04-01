@@ -79,6 +79,13 @@
         <Setter Property="Margin" Value="0,0,10,0" />
     </Style>
 
+    <Style x:Key="ToolbarButtonIconDisable" TargetType="fa:ImageAwesome">
+        <Setter Property="Foreground" Value="#aaa" />
+        <Setter Property="Width" Value="16" />
+        <Setter Property="Height" Value="16" />
+        <Setter Property="Margin" Value="0,0,10,0" />
+    </Style>
+
     <Style x:Key="ToolbarButtonText" TargetType="TextBlock">
         <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="VerticalAlignment" Value="Center" />

@@ -15,6 +15,10 @@ namespace Boysenberry.Views
         {
             InitializeComponent();
         }
+        private void UnloadedHandler(object sender, RoutedEventArgs e)
+        {
+            ViewModel.UnloadedHandler();
+        }
         private void SelectionChanged(object sender, RoutedEventArgs e)
         {
             ViewModel.SelectionChanged();
@@ -43,6 +47,6 @@ namespace Boysenberry.Views
         {
             ViewModel.Delete();
         }
-        
+
     }
 }

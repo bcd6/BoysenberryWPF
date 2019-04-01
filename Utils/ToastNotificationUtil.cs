@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using ToastNotifications;
 using ToastNotifications.Position;
 using System.Windows;

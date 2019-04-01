@@ -1,28 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Boysenberry.Models;
-using Boysenberry.Repos;
+﻿using Boysenberry.Repos;
 using Boysenberry.Services;
-using System.Collections.ObjectModel;
 using Prism.Mvvm;
 using System.Configuration;
-using System.Data.SQLite;
-using System.Diagnostics;
 
 namespace Boysenberry.ViewModels
 {
     class SettingViewModel : BindableBase
     {
         public static string SELECT_BASE_HINT = "Please select the base";
-        public static string WeiboDB = @"Data Source=weibo.db;";
 
-        private string _weibobase = SELECT_BASE_HINT;
-        //private string _input;
-        //private ObservableCollection<Record> _list;
-        //private Record _selected;
         private DataAccess _dataAccess;
-        //private WeiboService _service;
+        private string _weibobase = SELECT_BASE_HINT;
+        private WeiboService _weiboService;
 
 
         public string WeiboBase
@@ -31,9 +20,11 @@ namespace Boysenberry.ViewModels
             set { SetProperty(ref _weibobase, value); }
         }
 
-        public SettingViewModel()
+        public SettingViewModel(WeiboService weiboService)
         {
-            _weibobase = !ConfigurationManager.AppSettings["WeiboBase"].Equals("") ? ConfigurationManager.AppSettings["WeiboBase"] : "Please select the base";
+            _weiboService = weiboService;
+            _weibobase = !ConfigurationManager.AppSettings[_weiboService.BASE].Equals("") ? 
+                ConfigurationManager.AppSettings[_weiboService.BASE] : SELECT_BASE_HINT;
         }
 
         public void InitBase(string mode)
@@ -43,11 +34,11 @@ namespace Boysenberry.ViewModels
                 baseDialog.ShowDialog();
                 var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
                 var selectPath = !baseDialog.SelectedPath.Equals("") ? baseDialog.SelectedPath : SELECT_BASE_HINT;
-                if (mode == "weibo")
+                if (mode == _weiboService.TAG)
                 {
                     WeiboBase = !WeiboBase.Equals(selectPath) && !selectPath.Equals(SELECT_BASE_HINT) ? selectPath : WeiboBase;
-                    config.AppSettings.Settings["WeiboBase"].Value = WeiboBase;
-                    _dataAccess = new DataAccess(WeiboDB);
+                    config.AppSettings.Settings[_weiboService.BASE].Value = WeiboBase;
+                    _dataAccess = new DataAccess(_weiboService.DB);
                     _dataAccess.CreateTable();
                 }
 

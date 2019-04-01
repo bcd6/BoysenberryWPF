@@ -13,7 +13,12 @@ namespace Boysenberry.Models
         private DateTime _updateTime;
 
         private bool _isFuncEnable = true;
+        private bool _isStopEnable = false;
         private bool _isOpenEnable = true;
+        private Style _funcIconStyle = Application.Current.FindResource("ToolbarButtonIcon") as Style;
+        private Style _stopIconStyle = Application.Current.FindResource("ToolbarButtonIconDisable") as Style;
+        private Style _openIconStyle = Application.Current.FindResource("ToolbarButtonIcon") as Style;
+
         private Visibility _isProgressVisiable = Visibility.Hidden;
         private CancellationTokenSource _cancellationTokenSource;
 
@@ -45,13 +50,33 @@ namespace Boysenberry.Models
             get { return _isFuncEnable; }
             set { SetProperty(ref _isFuncEnable, value); }
         }
-       public bool IsOpenEnable
+        public bool IsStopEnable
+        {
+            get { return _isStopEnable; }
+            set { SetProperty(ref _isStopEnable, value); }
+        }
+        public bool IsOpenEnable
         {
             get { return _isOpenEnable; }
             set { SetProperty(ref _isOpenEnable, value); }
         }
-       
-         public Visibility IsProgressVisiable
+        public Style FuncIconStyle
+        {
+            get { return _funcIconStyle; }
+            set { SetProperty(ref _funcIconStyle, value); }
+        }
+        public Style StopIconStyle
+        {
+            get { return _stopIconStyle; }
+            set { SetProperty(ref _stopIconStyle, value); }
+        }
+        public Style OpenIconStyle
+        {
+            get { return _openIconStyle; }
+            set { SetProperty(ref _openIconStyle, value); }
+        }
+
+        public Visibility IsProgressVisiable
         {
             get { return _isProgressVisiable; }
             set { SetProperty(ref _isProgressVisiable, value); }

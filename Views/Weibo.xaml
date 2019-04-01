@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
     prism:ViewModelLocator.AutoWireViewModel="True"
+    Unloaded="UnloadedHandler"
     mc:Ignorable="d">
 
     <Grid>
@@ -32,7 +33,7 @@
                 IsEnabled="{Binding Selected.IsFuncEnable}"
                 Style="{StaticResource ToolbarButton}">
                 <StackPanel Style="{StaticResource ToolbarButtonStackPanel}">
-                    <fa:ImageAwesome Icon="Spinner" Style="{StaticResource ToolbarButtonIcon}" />
+                    <fa:ImageAwesome Icon="Spinner" Style="{Binding Selected.FuncIconStyle}" />
                     <TextBlock Style="{StaticResource ToolbarButtonText}">Analyse</TextBlock>
                 </StackPanel>
             </Button>
@@ -41,17 +42,17 @@
                 IsEnabled="{Binding Selected.IsFuncEnable}"
                 Style="{StaticResource ToolbarButton}">
                 <StackPanel Style="{StaticResource ToolbarButtonStackPanel}">
-                    <fa:ImageAwesome Icon="HourglassStart" Style="{StaticResource ToolbarButtonIcon}" />
+                    <fa:ImageAwesome Icon="HourglassStart" Style="{Binding Selected.FuncIconStyle}" />
                     <TextBlock Style="{StaticResource ToolbarButtonText}">Start</TextBlock>
                 </StackPanel>
             </Button>
 
             <Button
                 Click="Stop"
-                IsEnabled="{Binding Selected.IsFuncEnable}"
+                IsEnabled="{Binding Selected.IsStopEnable}"
                 Style="{StaticResource ToolbarButton}">
                 <StackPanel Style="{StaticResource ToolbarButtonStackPanel}">
-                    <fa:ImageAwesome Icon="Stop" Style="{StaticResource ToolbarButtonIcon}" />
+                    <fa:ImageAwesome Icon="Stop" Style="{Binding Selected.StopIconStyle}" />
                     <TextBlock Style="{StaticResource ToolbarButtonText}">Stop</TextBlock>
                 </StackPanel>
             </Button>
@@ -62,7 +63,7 @@
                 IsEnabled="{Binding Selected.IsOpenEnable}"
                 Style="{StaticResource ToolbarButton}">
                 <StackPanel Style="{StaticResource ToolbarButtonStackPanel}">
-                    <fa:ImageAwesome Icon="FolderOpen" Style="{StaticResource ToolbarButtonIcon}" />
+                    <fa:ImageAwesome Icon="FolderOpen" Style="{Binding Selected.OpenIconStyle}" />
                     <TextBlock Style="{StaticResource ToolbarButtonText}">Open</TextBlock>
                 </StackPanel>
             </Button>
@@ -72,7 +73,7 @@
                 IsEnabled="{Binding Selected.IsFuncEnable}"
                 Style="{StaticResource ToolbarButton}">
                 <StackPanel Style="{StaticResource ToolbarButtonStackPanel}">
-                    <fa:ImageAwesome Icon="Close" Style="{StaticResource ToolbarButtonIcon}" />
+                    <fa:ImageAwesome Icon="Close" Style="{Binding Selected.FuncIconStyle}" />
                     <TextBlock Style="{StaticResource ToolbarButtonText}">Delete</TextBlock>
                 </StackPanel>
             </Button>
