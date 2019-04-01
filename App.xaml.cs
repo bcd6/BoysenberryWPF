@@ -1,17 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
+using Prism.Ioc;
+using Prism.Unity;
+using Boysenberry.Views;
 
 namespace Boysenberry
 {
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : Application
+    public partial class App : PrismApplication
     {
+        protected override Window CreateShell()
+        {
+            return Container.Resolve<MainWindow>();
+        }
+
+
+        protected override void RegisterTypes(IContainerRegistry containerRegistry)
+        {
+
+        }
     }
 }

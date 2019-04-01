@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Boysenberry
+namespace Boysenberry.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -23,11 +23,15 @@ namespace Boysenberry
         public MainWindow()
         {
             InitializeComponent();
+            MainFrame.Navigate(new Uri("Views/Welcome.xaml", UriKind.Relative));
+            MainTitle.Content = "Welcome";
         }
 
-        private void ButtonExit_Click(object sender, RoutedEventArgs e)
+        private void Navigate(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();
+            Button menu = sender as Button;
+            MainFrame.Navigate(new Uri("Views/"+menu.Tag+".xaml", UriKind.Relative));
+            MainTitle.Content = menu.Tag;
         }
     }
 }

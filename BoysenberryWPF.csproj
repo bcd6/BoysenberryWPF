@@ -15,6 +15,23 @@
 
   <ItemGroup>
     <None Remove="Assets\Welcome.png" />
+    <None Remove="Styles\theme.xaml" />
+    <None Remove="Views\Setting.xaml" />
+    <None Remove="Views\Weibo.xaml" />
+    <None Remove="Views\Welcome.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommonServiceLocator" Version="2.0.4" />
+    <PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="Prism.Core" Version="7.2.0.1038-pre" />
+    <PackageReference Include="Prism.Unity" Version="7.2.0.1038-pre" />
+    <PackageReference Include="Prism.Wpf" Version="7.2.0.1038-pre" />
+    <PackageReference Include="RestSharp" Version="106.6.9" />
+    <PackageReference Include="System.Data.SQLite" Version="1.0.110" />
+    <PackageReference Include="ToastNotifications" Version="2.5.1" />
+    <PackageReference Include="ToastNotifications.Messages" Version="2.5.1" />
   </ItemGroup>
 
   <ItemGroup>
