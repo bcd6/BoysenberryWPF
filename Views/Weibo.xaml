@@ -9,84 +9,213 @@
     prism:ViewModelLocator.AutoWireViewModel="True"
     Unloaded="UnloadedHandler"
     mc:Ignorable="d">
-
+    <Page.Resources>
+        <Style x:Key="DataGridRow" TargetType="DataGridRow">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#f2f2f2" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="DataGridColumnHeader" TargetType="{x:Type DataGridColumnHeader}">
+            <Setter Property="Height" Value="36" />
+            <Setter Property="Foreground" Value="#666" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridColumnHeader}">
+                        <Grid Background="#fff">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Border
+                                x:Name="BackgroundBorder"
+                                Grid.ColumnSpan="2"
+                                BorderBrush="#f2f2f2"
+                                BorderThickness="1,1,0,1" />
+                            <ContentPresenter
+                                Grid.Column="0"
+                                Margin="10,0,10,0"
+                                VerticalAlignment="Center" />
+                            <Path
+                                x:Name="SortArrow"
+                                Grid.Column="1"
+                                Width="8"
+                                Height="6"
+                                Margin="0,0,8,0"
+                                VerticalAlignment="Center"
+                                Data="M0,0 L1,0 0.5,1 z"
+                                Fill="#3f9dd7"
+                                RenderTransformOrigin="0.5,0.4"
+                                Stretch="Fill"
+                                Visibility="Collapsed" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="SortDirection" Value="Ascending">
+                                <Setter TargetName="SortArrow" Property="Visibility" Value="Visible" />
+                                <Setter TargetName="SortArrow" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <RotateTransform Angle="180" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="SortDirection" Value="Descending">
+                                <Setter TargetName="SortArrow" Property="Visibility" Value="Visible" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="DataGridColumnHeaderFirst" TargetType="{x:Type DataGridColumnHeader}">
+            <Setter Property="Height" Value="36" />
+            <Setter Property="Foreground" Value="#666" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridColumnHeader}">
+                        <Grid Background="#fff">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Border
+                                x:Name="BackgroundBorder"
+                                Grid.ColumnSpan="2"
+                                BorderBrush="#f2f2f2"
+                                BorderThickness="0,1,0,1" />
+                            <ContentPresenter
+                                Grid.Column="0"
+                                Margin="10,0,10,0"
+                                VerticalAlignment="Center" />
+                            <Path
+                                x:Name="SortArrow"
+                                Grid.Column="1"
+                                Width="8"
+                                Height="6"
+                                Margin="0,0,8,0"
+                                VerticalAlignment="Center"
+                                Data="M0,0 L1,0 0.5,1 z"
+                                Fill="#3f9dd7"
+                                RenderTransformOrigin="0.5,0.4"
+                                Stretch="Fill"
+                                Visibility="Collapsed" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="SortDirection" Value="Ascending">
+                                <Setter TargetName="SortArrow" Property="Visibility" Value="Visible" />
+                                <Setter TargetName="SortArrow" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <RotateTransform Angle="180" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="SortDirection" Value="Descending">
+                                <Setter TargetName="SortArrow" Property="Visibility" Value="Visible" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="48" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Style="{StaticResource ToolbarStackPanel}">
-            <Label Content="{Binding Base}" Style="{StaticResource ToolbarLabel}" />
-            <Label Style="{StaticResource ToolbarSeperate}">|</Label>
-            <TextBox Style="{StaticResource ToolbarTextBox}" Text="{Binding Path=Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+        <Grid Grid.Row="0" Style="{StaticResource ToolbarGrid}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0" Style="{StaticResource ToolbarStackPanel}">
+                <Label Content="{Binding Base}" Style="{StaticResource ToolbarLabel}" />
+            </StackPanel>
+
+            <StackPanel Grid.Column="2" Style="{StaticResource ToolbarStackPanel}">
+                <Button IsEnabled="False" Style="{StaticResource ToolbarButton}">
+                    <StackPanel Style="{StaticResource ToolbarButtonStackPanel}">
+                        <fa:ImageAwesome Icon="List" Style="{StaticResource ToolbarButtonIcon}" />
+                        <TextBlock Style="{StaticResource ToolbarButtonText}" Text="{Binding List.Count}" />
+                    </StackPanel>
+                </Button>
+
+                <TextBox Style="{StaticResource ToolbarTextBox}" Text="{Binding Path=Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <Button
+                    Click="Add"
+                    IsEnabled="{Binding IsAdding}"
+                    Style="{StaticResource ToolbarButton}">
+                    <StackPanel Style="{StaticResource ToolbarButtonStackPanel}">
+                        <fa:ImageAwesome Icon="PlusSquare" Style="{Binding AddStyle}" />
+                        <TextBlock Style="{StaticResource ToolbarButtonText}">Add</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Label Style="{StaticResource ToolbarSeperate}">|</Label>
+                <Button
+                    Click="Analyse"
+                    IsEnabled="{Binding Selected.IsFuncEnable}"
+                    Style="{StaticResource ToolbarButton}">
+                    <StackPanel Style="{StaticResource ToolbarButtonStackPanel}">
+                        <fa:ImageAwesome Icon="Spinner" Style="{Binding Selected.FuncIconStyle}" />
+                        <TextBlock Style="{StaticResource ToolbarButtonText}">Analyse</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button
+                    Click="Start"
+                    IsEnabled="{Binding Selected.IsFuncEnable}"
+                    Style="{StaticResource ToolbarButton}">
+                    <StackPanel Style="{StaticResource ToolbarButtonStackPanel}">
+                        <fa:ImageAwesome Icon="HourglassStart" Style="{Binding Selected.FuncIconStyle}" />
+                        <TextBlock Style="{StaticResource ToolbarButtonText}">Start</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button
+                    Click="Stop"
+                    IsEnabled="{Binding Selected.IsStopEnable}"
+                    Style="{StaticResource ToolbarButton}">
+                    <StackPanel Style="{StaticResource ToolbarButtonStackPanel}">
+                        <fa:ImageAwesome Icon="Stop" Style="{Binding Selected.StopIconStyle}" />
+                        <TextBlock Style="{StaticResource ToolbarButtonText}">Stop</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button
+                    Click="Open"
+                    IsEnabled="{Binding Selected.IsOpenEnable}"
+                    Style="{StaticResource ToolbarButton}">
+                    <StackPanel Style="{StaticResource ToolbarButtonStackPanel}">
+                        <fa:ImageAwesome Icon="FolderOpen" Style="{Binding Selected.OpenIconStyle}" />
+                        <TextBlock Style="{StaticResource ToolbarButtonText}">Open</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button
+                    Click="Delete"
+                    IsEnabled="{Binding Selected.IsFuncEnable}"
+                    Style="{StaticResource ToolbarButton}">
+                    <StackPanel Style="{StaticResource ToolbarButtonStackPanel}">
+                        <fa:ImageAwesome Icon="Close" Style="{Binding Selected.FuncIconStyle}" />
+                        <TextBlock Style="{StaticResource ToolbarButtonText}">Delete</TextBlock>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Grid>
 
 
-            <Button Click="Add" Style="{StaticResource ToolbarButton}">
-                <StackPanel Style="{StaticResource ToolbarButtonStackPanel}">
-                    <fa:ImageAwesome Icon="PlusSquare" Style="{StaticResource ToolbarButtonIcon}" />
-                    <TextBlock Style="{StaticResource ToolbarButtonText}">Add</TextBlock>
-                </StackPanel>
-            </Button>
-            <Label Style="{StaticResource ToolbarSeperate}">|</Label>
-            <Button
-                Click="Analyse"
-                IsEnabled="{Binding Selected.IsFuncEnable}"
-                Style="{StaticResource ToolbarButton}">
-                <StackPanel Style="{StaticResource ToolbarButtonStackPanel}">
-                    <fa:ImageAwesome Icon="Spinner" Style="{Binding Selected.FuncIconStyle}" />
-                    <TextBlock Style="{StaticResource ToolbarButtonText}">Analyse</TextBlock>
-                </StackPanel>
-            </Button>
-            <Button
-                Click="Start"
-                IsEnabled="{Binding Selected.IsFuncEnable}"
-                Style="{StaticResource ToolbarButton}">
-                <StackPanel Style="{StaticResource ToolbarButtonStackPanel}">
-                    <fa:ImageAwesome Icon="HourglassStart" Style="{Binding Selected.FuncIconStyle}" />
-                    <TextBlock Style="{StaticResource ToolbarButtonText}">Start</TextBlock>
-                </StackPanel>
-            </Button>
 
-            <Button
-                Click="Stop"
-                IsEnabled="{Binding Selected.IsStopEnable}"
-                Style="{StaticResource ToolbarButton}">
-                <StackPanel Style="{StaticResource ToolbarButtonStackPanel}">
-                    <fa:ImageAwesome Icon="Stop" Style="{Binding Selected.StopIconStyle}" />
-                    <TextBlock Style="{StaticResource ToolbarButtonText}">Stop</TextBlock>
-                </StackPanel>
-            </Button>
-
-
-            <Button
-                Click="Open"
-                IsEnabled="{Binding Selected.IsOpenEnable}"
-                Style="{StaticResource ToolbarButton}">
-                <StackPanel Style="{StaticResource ToolbarButtonStackPanel}">
-                    <fa:ImageAwesome Icon="FolderOpen" Style="{Binding Selected.OpenIconStyle}" />
-                    <TextBlock Style="{StaticResource ToolbarButtonText}">Open</TextBlock>
-                </StackPanel>
-            </Button>
-
-            <Button
-                Click="Delete"
-                IsEnabled="{Binding Selected.IsFuncEnable}"
-                Style="{StaticResource ToolbarButton}">
-                <StackPanel Style="{StaticResource ToolbarButtonStackPanel}">
-                    <fa:ImageAwesome Icon="Close" Style="{Binding Selected.FuncIconStyle}" />
-                    <TextBlock Style="{StaticResource ToolbarButtonText}">Delete</TextBlock>
-                </StackPanel>
-            </Button>
-
-        </StackPanel>
         <DataGrid
             Grid.Row="1"
             AutoGenerateColumns="False"
             CanUserReorderColumns="False"
             CanUserResizeColumns="False"
             CanUserSortColumns="True"
+            CellStyle="{StaticResource DataGridCell}"
             IsReadOnly="True"
             ItemsSource="{Binding List}"
+            RowHeaderStyle="{StaticResource DataGridRowHeader}"
+            RowStyle="{StaticResource DataGridRow}"
             SelectedItem="{Binding Selected}"
             SelectionChanged="SelectionChanged"
             Style="{StaticResource DataGrid}">
@@ -94,28 +223,39 @@
                 <DataGridTextColumn
                     Width="15*"
                     Binding="{Binding UserId}"
-                    Header="User Id" />
+                    ElementStyle="{StaticResource ColumnElementStyle}"
+                    Header="User Id"
+                    HeaderStyle="{StaticResource DataGridColumnHeaderFirst}" />
                 <DataGridTextColumn
-                    Width="35*"
+                    Width="30*"
                     Binding="{Binding Nickname}"
-                    Header="Nickname" />
+                    ElementStyle="{StaticResource ColumnElementStyle}"
+                    Header="Nickname"
+                    HeaderStyle="{StaticResource DataGridColumnHeader}" />
                 <DataGridTextColumn
                     Width="15*"
                     Binding="{Binding Count}"
-                    Header="Count" />
+                    ElementStyle="{StaticResource ColumnElementStyle}"
+                    Header="Count"
+                    HeaderStyle="{StaticResource DataGridColumnHeader}" />
                 <DataGridTextColumn
                     Width="25*"
                     Binding="{Binding UpdateTime}"
-                    Header="Update Time" />
-                <DataGridTemplateColumn Header="Progress">
+                    ElementStyle="{StaticResource ColumnElementStyle}"
+                    Header="Update Time"
+                    HeaderStyle="{StaticResource DataGridColumnHeader}" />
+                <DataGridTemplateColumn
+                    Width="15*"
+                    CellStyle="{StaticResource ColumnElementTemplateStyle}"
+                    Header="Progress"
+                    HeaderStyle="{StaticResource DataGridColumnHeader}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <fa:ImageAwesome
                                 Icon="CircleOutlineNotch"
                                 Spin="True"
                                 SpinDuration="2"
-                                Style="{StaticResource ToolbarButtonIcon}"
-                                Visibility="{Binding IsProgressVisiable}" />
+                                Style="{Binding ProgressIconStyle}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

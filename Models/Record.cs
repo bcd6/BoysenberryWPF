@@ -18,8 +18,8 @@ namespace Boysenberry.Models
         private Style _funcIconStyle = Application.Current.FindResource("ToolbarButtonIcon") as Style;
         private Style _stopIconStyle = Application.Current.FindResource("ToolbarButtonIconDisable") as Style;
         private Style _openIconStyle = Application.Current.FindResource("ToolbarButtonIcon") as Style;
+        private Style _progressIconStyle = Application.Current.FindResource("DataGridProgressIconDisable") as Style;
 
-        private Visibility _isProgressVisiable = Visibility.Hidden;
         private CancellationTokenSource _cancellationTokenSource;
 
 
@@ -76,10 +76,10 @@ namespace Boysenberry.Models
             set { SetProperty(ref _openIconStyle, value); }
         }
 
-        public Visibility IsProgressVisiable
+        public Style ProgressIconStyle
         {
-            get { return _isProgressVisiable; }
-            set { SetProperty(ref _isProgressVisiable, value); }
+            get { return _progressIconStyle; }
+            set { SetProperty(ref _progressIconStyle, value); }
         }
 
         public CancellationTokenSource CancellationTokenSource

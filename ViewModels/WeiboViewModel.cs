@@ -20,6 +20,10 @@ namespace Boysenberry.ViewModels
     {
         private Style _enableStyle = Application.Current.FindResource("ToolbarButtonIcon") as Style;
         private Style _disableStyle = Application.Current.FindResource("ToolbarButtonIconDisable") as Style;
+        private Style _enableStyleProgress = Application.Current.FindResource("DataGridProgressIcon") as Style;
+        private Style _disableStyleProgress = Application.Current.FindResource("DataGridProgressIconDisable") as Style;
+        private bool _isAdding = true;
+        private Style _addStyle = Application.Current.FindResource("ToolbarButtonIcon") as Style;
         private string _base;
         private string _input;
         private ObservableCollection<Record> _list;
@@ -50,6 +54,16 @@ namespace Boysenberry.ViewModels
         {
             get { return _selected; }
             set { SetProperty(ref _selected, value); }
+        }
+        public bool IsAdding
+        {
+            get { return _isAdding; }
+            set { SetProperty(ref _isAdding, value); }
+        }
+         public Style AddStyle
+        {
+            get { return _addStyle; }
+            set { SetProperty(ref _addStyle, value); }
         }
 
         public WeiboViewModel(WeiboService service)
@@ -131,14 +145,23 @@ namespace Boysenberry.ViewModels
 
         }
 
-        public void Add()
+        public async void Add()
         {
-
             try
             {
-                var nickname = Input.Trim();
-                var userId = _service.NicknameToUserId(nickname);
-                if (userId == null) return;
+                string nickname = Input.Trim();
+                if (nickname.Equals(""))
+                {
+                    return;
+                }
+                IsAdding = false;
+                AddStyle = _disableStyle;
+                string userId = "";
+                await Task.Run(() =>
+                {
+                    userId = _service.NicknameToUserId(nickname);
+                    if (userId == null) return;
+                });
                 Record record = new Record(userId, nickname, 0, DateTime.Now);
                 var row = _dataAccess.Insert(record);
                 if (row == 0)
@@ -153,6 +176,9 @@ namespace Boysenberry.ViewModels
                     Input = "";
                     ToastNotificationUtil.Show("Save success: " + nickname);
                 }
+                IsAdding = true;
+                AddStyle = _enableStyle;
+
             }
             catch (Exception)
             {
@@ -169,7 +195,7 @@ namespace Boysenberry.ViewModels
                 record.IsStopEnable = true;
                 record.FuncIconStyle = _disableStyle;
                 record.StopIconStyle = _enableStyle;
-                record.IsProgressVisiable = Visibility.Visible;
+                record.ProgressIconStyle = _enableStyleProgress;
                 RaisePropertyChanged(string.Empty);
                 var imgUrls = new List<string>();
                 await Task.Run(() =>
@@ -183,7 +209,7 @@ namespace Boysenberry.ViewModels
                 record.IsStopEnable = false;
                 record.FuncIconStyle = _enableStyle;
                 record.StopIconStyle = _disableStyle;
-                record.IsProgressVisiable = Visibility.Hidden;
+                record.ProgressIconStyle = _disableStyleProgress;
                 RaisePropertyChanged(string.Empty);
                 ToastNotificationUtil.Show("Analyse complete: " + record.Nickname);
             }
@@ -205,7 +231,7 @@ namespace Boysenberry.ViewModels
                 record.IsStopEnable = true;
                 record.FuncIconStyle = _disableStyle;
                 record.StopIconStyle = _enableStyle;
-                record.IsProgressVisiable = Visibility.Visible;
+                record.ProgressIconStyle = _enableStyleProgress;
                 RaisePropertyChanged(string.Empty);
                 var imgUrls = new List<string>();
                 await Task.Run(async () =>
@@ -228,7 +254,7 @@ namespace Boysenberry.ViewModels
                 record.IsStopEnable = false;
                 record.FuncIconStyle = _enableStyle;
                 record.StopIconStyle = _disableStyle;
-                record.IsProgressVisiable = Visibility.Hidden;
+                record.ProgressIconStyle = _disableStyleProgress;
                 RaisePropertyChanged(string.Empty);
                 ToastNotificationUtil.Show("Downlaod complete: " + record.Nickname);
 
@@ -252,7 +278,7 @@ namespace Boysenberry.ViewModels
                     record.IsStopEnable = false;
                     record.FuncIconStyle = _enableStyle;
                     record.StopIconStyle = _disableStyle;
-                    record.IsProgressVisiable = Visibility.Hidden;
+                    record.ProgressIconStyle = _disableStyleProgress;
                     RaisePropertyChanged(string.Empty);
                     ToastNotificationUtil.Show("Task cancellation");
                 }
@@ -282,6 +308,12 @@ namespace Boysenberry.ViewModels
                 DirectoryInfo dstFolder = Directory.CreateDirectory(path);
                 dstFolder.Delete(true);
                 List.Remove(record);
+                Selected = new Record();
+                Selected.IsFuncEnable = false;
+                Selected.IsOpenEnable = false;
+                Selected.FuncIconStyle = _disableStyle;
+                Selected.OpenIconStyle = _disableStyle;
+                Selected.StopIconStyle = _disableStyle;
                 ToastNotificationUtil.Show("Delete complete: " + record.Nickname);
             }
             catch (Exception e)

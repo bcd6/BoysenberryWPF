@@ -22,7 +22,7 @@
                 Click="Navigate"
                 Style="{StaticResource NaviButton}"
                 Tag="Welcome">
-                <fa:ImageAwesome Icon="Bars" Style="{StaticResource NaviIcon}" />
+                <fa:ImageAwesome Icon="Home" Style="{StaticResource NaviIcon}" />
             </Button>
             <Button
                 Click="Navigate"
@@ -59,14 +59,14 @@
 
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="48" />
+                <RowDefinition Height="55" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Label
                 x:Name="MainTitle"
                 Grid.Row="0"
                 Margin="15,5,0,0"
-                FontSize="22"
+                FontSize="24"
                 Foreground="#333" />
             <Frame
                 x:Name="MainFrame"

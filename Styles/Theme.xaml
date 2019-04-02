@@ -30,14 +30,20 @@
         <!--<Setter Property="Background" Value="#F2F2F2" />-->
     </Style>
 
+    <Style x:Key="ToolbarGrid" TargetType="Grid">
+        <Setter Property="Margin" Value="15,0,15,0" />
+        <Setter Property="Background" Value="#f2f2f2" />
+
+    </Style>
+
     <Style x:Key="ToolbarStackPanel" TargetType="StackPanel">
         <Setter Property="Orientation" Value="Horizontal" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="Height" Value="48" />
-        <Setter Property="Margin" Value="15,0,15,0" />
-        <Setter Property="Background" Value="#F2F2F2" />
     </Style>
 
     <Style x:Key="ToolbarLabel" TargetType="Label">
+        <Setter Property="HorizontalAlignment" Value="Left" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="FontSize" Value="14" />
         <Setter Property="Margin" Value="5,0,0,0" />
@@ -47,6 +53,7 @@
         <Setter Property="FontSize" Value="20" />
         <Setter Property="FontWeight" Value="Light" />
         <Setter Property="Margin" Value="5,0,0,0" />
+        <Setter Property="Foreground" Value="#666" />
     </Style>
 
     <Style x:Key="ToolbarTextBox" TargetType="TextBox">
@@ -95,12 +102,37 @@
 
     <Style x:Key="DataGrid" TargetType="DataGrid">
         <Setter Property="HorizontalAlignment" Value="Stretch" />
-        <Setter Property="Margin" Value="15,5,15,0" />
+        <Setter Property="Margin" Value="15,0,15,0" />
         <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="RowHeight" Value="24" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="RowHeight" Value="36" />
         <Setter Property="FontSize" Value="14" />
         <Setter Property="GridLinesVisibility" Value="None" />
+        <Setter Property="Background" Value="#fff" />
+    </Style>
+
+    <Style x:Key="DataGridRowHeader" TargetType="DataGridRowHeader">
+        <Setter Property="Width" Value="0" />
+    </Style>
+    <Style x:Key="DataGridCell" TargetType="DataGridCell">
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    <Style x:Key="ColumnElementStyle" TargetType="TextBlock">
+        <Setter Property="Margin" Value="10,8,10,0" />
+        <Setter Property="LineHeight" Value="36" />
+    </Style>
+    <Style x:Key="ColumnElementTemplateStyle" TargetType="DataGridCell" />
+
+    <Style x:Key="DataGridProgressIcon" TargetType="fa:ImageAwesome">
+        <Setter Property="Foreground" Value="#333" />
+        <Setter Property="Width" Value="16" />
+        <Setter Property="Height" Value="16" />
+        <Setter Property="Margin" Value="0,0,0,0" />
+    </Style>
+    <Style x:Key="DataGridProgressIconDisable" TargetType="fa:ImageAwesome">
+        <Setter Property="Foreground" Value="#333" />
+        <Setter Property="Width" Value="0" />
+        <Setter Property="Height" Value="0" />
+        <Setter Property="Margin" Value="0,0,0,0" />
     </Style>
 
 </ResourceDictionary>
