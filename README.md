@@ -1,4 +1,7 @@
 # BoysenberryWPF
-This is a windows desktop tool build with .NetCore 3 & WPF.
+This is a UWP like WPF application for batchdownlaod pictures from Weibo, Bilibili, Flickr, Pixiv. 
+Build with .NetCore 3 & WPF.
 
-V1.0 Download :  https://github.com/bcd6/BoysenberryWPF/releases/download/v1.0/Boysenberry.zip
+
+
+V1.1 Download :  https://github.com/bcd6/BoysenberryWPF/releases/download/v1.1/Boysenberry.zip
