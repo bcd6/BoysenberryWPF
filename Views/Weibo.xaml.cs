@@ -23,6 +23,7 @@ namespace Boysenberry.Views
         {
             ViewModel.SelectionChanged();
         }
+       
         private void Add(object sender, RoutedEventArgs e)
         {
             ViewModel.Add();
@@ -48,5 +49,9 @@ namespace Boysenberry.Views
             ViewModel.Delete();
         }
 
+        private void InputChange(object sender, RoutedEventArgs e)
+        {
+            ViewModel.InputChange();
+        }
     }
 }

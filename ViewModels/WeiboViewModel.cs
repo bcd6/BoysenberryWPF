@@ -22,8 +22,8 @@ namespace Boysenberry.ViewModels
         private Style _disableStyle = Application.Current.FindResource("ToolbarButtonIconDisable") as Style;
         private Style _enableStyleProgress = Application.Current.FindResource("DataGridProgressIcon") as Style;
         private Style _disableStyleProgress = Application.Current.FindResource("DataGridProgressIconDisable") as Style;
-        private bool _isAdding = true;
-        private Style _addStyle = Application.Current.FindResource("ToolbarButtonIcon") as Style;
+        private bool _isAdding = false;
+        private Style _addStyle = Application.Current.FindResource("ToolbarButtonIconDisable") as Style;
         private string _base;
         private string _input;
         private ObservableCollection<Record> _list;
@@ -60,7 +60,7 @@ namespace Boysenberry.ViewModels
             get { return _isAdding; }
             set { SetProperty(ref _isAdding, value); }
         }
-         public Style AddStyle
+        public Style AddStyle
         {
             get { return _addStyle; }
             set { SetProperty(ref _addStyle, value); }
@@ -144,7 +144,19 @@ namespace Boysenberry.ViewModels
 
 
         }
-
+        public void InputChange()
+        {
+            Debug.WriteLine("input change");
+            if (Input != null && !Input.Equals(""))
+            {
+                IsAdding = true;
+                AddStyle = _enableStyle;
+            } else
+            {
+                IsAdding = false;
+                AddStyle = _disableStyle;
+            }
+        }
         public async void Add()
         {
             try
@@ -176,8 +188,8 @@ namespace Boysenberry.ViewModels
                     Input = "";
                     ToastNotificationUtil.Show("Save success: " + nickname);
                 }
-                IsAdding = true;
-                AddStyle = _enableStyle;
+                IsAdding = false;
+                AddStyle = _disableStyle;
 
             }
             catch (Exception)

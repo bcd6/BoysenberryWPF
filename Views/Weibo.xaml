@@ -144,7 +144,10 @@
                     </StackPanel>
                 </Button>
 
-                <TextBox Style="{StaticResource ToolbarTextBox}" Text="{Binding Path=Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBox
+                    Style="{StaticResource ToolbarTextBox}"
+                    Text="{Binding Path=Input, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    TextChanged="InputChange" />
                 <Button
                     Click="Add"
                     IsEnabled="{Binding IsAdding}"
