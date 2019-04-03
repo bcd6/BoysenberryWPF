@@ -1,5 +1,5 @@
 # BoysenberryWPF
-This is a UWP like WPF application for batchdownlaod pictures from Weibo, Bilibili, Flickr, Pixiv. 
+This is a UWP like WPF application for batchdownlaod pictures from Weibo, (Bilibili, Flickr, Pixiv TODO). 
 
 Build with .NetCore 3 & WPF.
 
