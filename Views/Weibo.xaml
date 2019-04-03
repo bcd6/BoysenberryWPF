@@ -139,7 +139,7 @@
             <StackPanel Grid.Column="2" Style="{StaticResource ToolbarStackPanel}">
                 <Button IsEnabled="False" Style="{StaticResource ToolbarButton}">
                     <StackPanel Style="{StaticResource ToolbarButtonStackPanel}">
-                        <fa:ImageAwesome Icon="List" Style="{StaticResource ToolbarButtonIcon}" />
+                        <fa:ImageAwesome Icon="List" Style="{StaticResource ToolbarButtonIconDisable}" />
                         <TextBlock Style="{StaticResource ToolbarButtonText}" Text="{Binding List.Count}" />
                     </StackPanel>
                 </Button>
